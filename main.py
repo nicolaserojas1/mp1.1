@@ -2,7 +2,7 @@
 
 def cargar_datos():
     # Completar
-    with open("pokemon.csv") as f:
+    with open("pokemon.csv", "r", encoding="UTF-8") as f:
         print(f)
 
 # Parte 2: Completar las consultas
