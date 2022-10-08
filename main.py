@@ -1,9 +1,13 @@
 # Parte 1: Cargar los datos
 
-def cargar_datos():
-    # Completar
-    with open("pokemon.csv", "r", encoding="UTF-8") as f:
-        print(f)
+import readline
+
+
+def cargar_datos(archivo_A_Cargar="pokemon.csv"):
+    # abre archivo csv
+    with open(archivo_A_Cargar, "r", encoding="UTF-8") as f:
+        linea = f.readlines()
+    
 
 # Parte 2: Completar las consultas
 
