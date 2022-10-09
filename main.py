@@ -3,10 +3,19 @@
 import readline
 
 
-def cargar_datos(archivo_A_Cargar="pokemon.csv"):
-    # abre archivo csv
-    with open(archivo_A_Cargar, "r", encoding="UTF-8") as f:
-        linea = f.readlines()
+def cargar_datos(ruta_archivo:str):
+    f = open(ruta_archivo,"r",encoding="utf-8")
+    lineas = f.readlines()
+    f.close()
+    pokemones = dict()
+    for linea in lineas:
+        separadas = linea.split(",")
+        nombre_pokemon= separadas[1]
+        descripcion_pokemon = separadas[0:1] + separadas[2:]
+        
+        for i in linea:
+            pokemones[nombre_pokemon] = descripcion_pokemon
+    return pokemones
     
 
 # Parte 2: Completar las consultas
