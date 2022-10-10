@@ -4,18 +4,45 @@ import readline
 
 
 def cargar_datos(ruta_archivo:str):
+    #lee archivo
     f = open(ruta_archivo,"r",encoding="utf-8")
     lineas = f.readlines()
     f.close()
-    pokemones = dict()
+
+    #Estrucutras solicitasdas
+    tipos_pokemon = list()
+    pokemon_por_tipo = dict()
+
     for linea in lineas:
         separadas = linea.split(",")
-        nombre_pokemon= separadas[1]
-        descripcion_pokemon = separadas[0:1] + separadas[2:]
+        id_pokemon = separadas[0]
+        nombre = separadas[1] 
+        tipos= separadas[2]
+        hp = separadas[3]
+        ataque = separadas[4]
+        defensa = separadas[5]
+        generacion = separadas[6]
         
-        for i in linea:
-            pokemones[nombre_pokemon] = descripcion_pokemon
-    return pokemones
+        for item in separadas:
+            if item == tipos:
+                tipos_pokemon.append(item)
+            else:
+                pass
+     
+    
+    #ciclo generador pokemon_por_tipo
+    for linea in lineas:
+        id_pokemon,nombre,tipo,hp,ataque,defensa,generacion = linea.split(",")
+        if id_pokemon == "id":
+            pass
+        else:
+            if tipo not in pokemon_por_tipo.keys():
+                pokemon_por_tipo[tipo] = [id_pokemon]
+            else:
+
+                pokemon_por_tipo[tipo].append(id_pokemon)
+
+    return pokemon_por_tipo, set(tipos_pokemon)
     
 
 # Parte 2: Completar las consultas
