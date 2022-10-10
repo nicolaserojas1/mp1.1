@@ -12,6 +12,9 @@ def cargar_datos(ruta_archivo:str):
     #Estrucutras solicitasdas
     tipos_pokemon = list()
     pokemon_por_tipo = dict()
+    info_pokemon = dict()
+    
+    #ciclo generador tipos_pokemon
 
     for linea in lineas:
         separadas = linea.split(",")
@@ -43,6 +46,35 @@ def cargar_datos(ruta_archivo:str):
                 pokemon_por_tipo[tipo].append(id_pokemon)
 
     return pokemon_por_tipo, set(tipos_pokemon)
+
+    #ciclo generador info_pokemon
+
+    f = open(ruta_archivo, "r", encoding="utf-8")
+    lineas = f.readlines()
+    f.close()
+
+    for linea in lineas:
+        columnas = linea.split(",")
+        id_pokemon = columnas[0]
+        columnas[6] = columnas[6].strip()
+        atributos = columnas[1:]
+
+
+        sub_info_poquemon = dict()
+        if atributos[0] == "nombre":
+            pass
+        else:         
+            sub_info_poquemon["nombre"] = atributos[0]
+            sub_info_poquemon["tipo"] = atributos[1]
+            sub_info_poquemon["hp"] = atributos[2]
+            sub_info_poquemon["ataque"] = atributos[3]
+            sub_info_poquemon["defensa"] = atributos[4]
+            sub_info_poquemon["generacion"] = atributos[5]
+            if id_pokemon not in info_pokemon:
+                info_pokemon[id_pokemon] = sub_info_poquemon
+            else:
+                break
+    return info_pokemon
     
 
 # Parte 2: Completar las consultas
