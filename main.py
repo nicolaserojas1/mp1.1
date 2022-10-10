@@ -31,7 +31,7 @@ def cargar_datos(ruta_archivo:str):
                 tipos_pokemon.append(item)
             else:
                 pass
-     
+        return tipos_pokemon
     
     #ciclo generador pokemon_por_tipo
     for linea in lineas:
@@ -45,13 +45,9 @@ def cargar_datos(ruta_archivo:str):
 
                 pokemon_por_tipo[tipo].append(id_pokemon)
 
-    return pokemon_por_tipo, set(tipos_pokemon)
+        return pokemon_por_tipo
 
-    #ciclo generador info_pokemon
-
-    f = open(ruta_archivo, "r", encoding="utf-8")
-    lineas = f.readlines()
-    f.close()
+    #ciclo generador info_pokemo
 
     for linea in lineas:
         columnas = linea.split(",")
@@ -74,14 +70,18 @@ def cargar_datos(ruta_archivo:str):
                 info_pokemon[id_pokemon] = sub_info_poquemon
             else:
                 break
-    return info_pokemon
+        return info_pokemon
     
 
 # Parte 2: Completar las consultas
 
 def obtener_ataque_y_defensa(nombre_pokemon):
-    # Completar
-    pass
+    for k, v in info_pokemon.items():
+        for k2, v2 in v.items():
+            if v2 == nombre_pokemon:
+                resultado = v["ataque"], v["defensa"]
+                resultado = tuple(resultado)
+                print(resultado)
 
 def filtrar_y_ordenar(tipo_pokemon, criterio):
     # Completar
