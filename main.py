@@ -3,74 +3,61 @@ from typing import DefaultDict, DefaultDict
 
 # Parte 1: Cargar los datos
 def cargar_datos(ruta_archivo:str)->tuple:
-    #lee archivo
-    f = open(ruta_archivo,"r",encoding="utf-8")
-    lineas = f.readlines()
-    f.close()
 
-    #Estrucutras solicitasdas
-    tipos_pokemon = list()
-    pokemon_por_tipo = dict()
-    info_pokemon = dict()
-    
-    
-    #ciclo generador tipos_pokemon
-
-    for linea in lineas:
-        separadas = linea.split(",")
-        id_pokemon = separadas[0]
-        nombre = separadas[1] 
-        tipos= separadas[2]
-        hp = separadas[3]
-        ataque = separadas[4]
-        defensa = separadas[5]
-        generacion = separadas[6]
-        
-        for item in separadas:
-            if item == tipos:
-                tipos_pokemon.append(item)
+    with open(ruta_archivo, "r", encoding="utf-8") as f:
+        no_duplicados = list()
+        for linea in f:    
+            id_pokemon,nombre,tipo,hp,ataque,defensa,generacion = linea.strip().split(",")
+            if id_pokemon not in no_duplicados:
+                no_duplicados.append(linea)
             else:
                 pass
-        
-    
-    #ciclo generador pokemon_por_tipo
-    for linea in lineas:
-        id_pokemon,nombre,tipo,hp,ataque,defensa,generacion = linea.split(",")
-        if id_pokemon == "id":
+        lista_final = list()
+        for item in no_duplicados:
+            serparados = item.strip().split(",")
+            lista_final.append(serparados)
+
+    # lista de tipos_pokemon
+    tipos_pokemon = list()
+    for elemento in lista_final:
+        tipoPokemon = elemento[2]
+        if tipoPokemon not in lista_final:
+            tipos_pokemon.append(tipoPokemon)
+        else:
+            pass
+    tipos_pokemon = set(tipos_pokemon)
+    tipos_pokemon = list(tipos_pokemon)
+
+    # diccionario pokemon_por_tipo
+    pokemon_por_tipo =dict()
+    for tipo in tipos_pokemon:
+        lista_id = list()
+        for elemento in lista_final:
+            pokemon_por_tipo[tipo] = lista_id
+            if tipo == elemento[2]:
+                lista_id.append(elemento[0])
+            else:
+                pass
+
+    # # diccionario pokemon_por_tipo info_pokemon
+    info_pokemon = dict()
+    info_pokemon_atributos = dict()
+    for elemento in lista_final:
+
+        info_pokemon_atributos["nombre"] = elemento[1]
+        info_pokemon_atributos["tipo"] = elemento[2]
+        info_pokemon_atributos["hp"] = elemento[3]
+        info_pokemon_atributos["ataque"] = elemento[4]
+        info_pokemon_atributos["defensa"] = elemento[5]
+        info_pokemon_atributos["generacion"] = elemento[6]
+        if elemento[0] == "id":
             pass
         else:
-            if tipo not in pokemon_por_tipo.keys():
-                pokemon_por_tipo[tipo] = [id_pokemon]
+            if elemento[0] not in info_pokemon.values():
+                info_pokemon[elemento[0]] = info_pokemon_atributos
             else:
-
-                pokemon_por_tipo[tipo].append(id_pokemon)
-
-
-    #ciclo generador info_pokemo
-
-    for linea in lineas:
-        columnas = linea.split(",")
-        id_pokemon = columnas[0]
-        columnas[6] = columnas[6].strip()
-        atributos = columnas[1:]
-
-
-        sub_info_poquemon = dict()
-        if atributos[0] == "nombre":
-            pass
-        else:         
-            sub_info_poquemon["nombre"] = atributos[0]
-            sub_info_poquemon["tipo"] = atributos[1]
-            sub_info_poquemon["hp"] = atributos[2]
-            sub_info_poquemon["ataque"] = atributos[3]
-            sub_info_poquemon["defensa"] = atributos[4]
-            sub_info_poquemon["generacion"] = atributos[5]
-            if id_pokemon not in info_pokemon:
-                info_pokemon[id_pokemon] = sub_info_poquemon
-            else:
-                break
-
-    return info_pokemon, tipos_pokemon, pokemon_por_tipo
+                info_pokemon[elemento[0]].update(info_pokemon_atributos)
+    return info_pokemon, tipos_pokemon
 
 # Parte 2: Completar las consultas
 
